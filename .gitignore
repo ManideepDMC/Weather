@@ -1,0 +1,11 @@
+# Xcode
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+DerivedData/
+.build/
+
+# API Key - move to xcconfig before production
+# APIConstants.swift (uncomment this if you move the key to xcconfig)
+
+# macOS
+.DS_Store
