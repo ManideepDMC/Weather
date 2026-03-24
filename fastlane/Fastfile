@@ -29,7 +29,7 @@ platform :ios do
     scan(
       project: "Weather.xcodeproj",
       scheme: "Weather",
-      devices: [ENV["TEST_DEVICE"] || "iPhone 16 Pro"],
+      devices: [ENV["TEST_DEVICE"] || "iPhone 17 Pro"],
       clean: true,
       only_testing: ["WeatherTests"],
       code_coverage: true
@@ -41,7 +41,7 @@ platform :ios do
     scan(
       project: "Weather.xcodeproj",
       scheme: "Weather",
-      devices: [ENV["TEST_DEVICE"] || "iPhone 16 Pro"],
+      devices: [ENV["TEST_DEVICE"] || "iPhone 17 Pro"],
       clean: true,
       only_testing: ["WeatherUITests"]
     )

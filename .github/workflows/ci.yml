@@ -18,7 +18,7 @@ on:
       test_device:
         description: "Simulator device for tests"
         required: false
-        default: "iPhone 16 Pro"
+        default: "iPhone 17 Pro"
 
 jobs:
   build-and-test:
@@ -43,5 +43,5 @@ jobs:
 
       - name: Run CI pipeline
         env:
-          TEST_DEVICE: ${{ inputs.test_device || 'iPhone 16 Pro' }}
+          TEST_DEVICE: ${{ inputs.test_device || 'iPhone 17 Pro' }}
         run: bundle exec fastlane ci
