@@ -12,6 +12,9 @@ platform :ios do
   # CI LANES
   # ================================
 
+  # Resolve the test destination — uses ENV or auto-detects an available iPhone simulator
+  test_destination = ENV["TEST_DESTINATION"] || "platform=iOS Simulator,name=iPhone 16 Pro,OS=latest"
+
   desc "Build the app to check for compilation errors"
   lane :build do
     xcodebuild(
@@ -29,8 +32,9 @@ platform :ios do
     scan(
       project: "Weather.xcodeproj",
       scheme: "Weather",
-      devices: [ENV["TEST_DEVICE"] || "iPhone 17 Pro"],
+      destination: test_destination,
       clean: true,
+      skip_detect_devices: true,
       only_testing: ["WeatherTests"],
       code_coverage: true
     )
@@ -41,8 +45,9 @@ platform :ios do
     scan(
       project: "Weather.xcodeproj",
       scheme: "Weather",
-      devices: [ENV["TEST_DEVICE"] || "iPhone 17 Pro"],
+      destination: test_destination,
       clean: true,
+      skip_detect_devices: true,
       only_testing: ["WeatherUITests"]
     )
   end

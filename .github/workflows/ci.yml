@@ -15,10 +15,10 @@ on:
         options:
           - macos-14
           - macos-15
-      test_device:
-        description: "Simulator device for tests"
+      test_destination:
+        description: "Xcode destination string for tests"
         required: false
-        default: "iPhone 17 Pro"
+        default: "platform=iOS Simulator,name=iPhone 16 Pro,OS=latest"
 
 jobs:
   build-and-test:
@@ -35,13 +35,16 @@ jobs:
       - name: Select latest Xcode
         run: sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
 
-      - name: List available simulators
-        run: xcrun simctl list devices available | grep "iPhone" | head -10
+      - name: Print Xcode version
+        run: xcodebuild -version
+
+      - name: List available iPhone simulators
+        run: xcrun simctl list devices available | grep "iPhone"
 
       - name: Install dependencies
         run: bundle install
 
       - name: Run CI pipeline
         env:
-          TEST_DEVICE: ${{ inputs.test_device || 'iPhone 17 Pro' }}
+          TEST_DESTINATION: ${{ inputs.test_destination || 'platform=iOS Simulator,name=iPhone 16 Pro,OS=latest' }}
         run: bundle exec fastlane ci
