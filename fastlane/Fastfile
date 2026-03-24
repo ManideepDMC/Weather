@@ -1,0 +1,62 @@
+# Fix locale for xcpretty compatibility
+ENV["LC_ALL"] = "en_US.UTF-8"
+ENV["LANG"] = "en_US.UTF-8"
+Encoding.default_external = Encoding::UTF_8
+Encoding.default_internal = Encoding::UTF_8
+
+default_platform(:ios)
+
+platform :ios do
+
+  # ================================
+  # CI LANES
+  # ================================
+
+  desc "Build the app to check for compilation errors"
+  lane :build do
+    xcodebuild(
+      project: "Weather.xcodeproj",
+      scheme: "Weather",
+      clean: true,
+      build: true,
+      destination: "generic/platform=iOS Simulator",
+      xcargs: "CODE_SIGN_IDENTITY='' CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO"
+    )
+  end
+
+  desc "Run unit tests"
+  lane :unit_tests do
+    scan(
+      project: "Weather.xcodeproj",
+      scheme: "Weather",
+      devices: ["iPhone 17 Pro"],
+      clean: true,
+      only_testing: ["WeatherTests"],
+      code_coverage: true
+    )
+  end
+
+  desc "Run UI tests"
+  lane :ui_tests do
+    scan(
+      project: "Weather.xcodeproj",
+      scheme: "Weather",
+      devices: ["iPhone 17 Pro"],
+      clean: true,
+      only_testing: ["WeatherUITests"]
+    )
+  end
+
+  desc "Run all tests (unit + UI)"
+  lane :all_tests do
+    unit_tests
+    ui_tests
+  end
+
+  desc "Full CI pipeline: build + all tests"
+  lane :ci do
+    build
+    all_tests
+  end
+
+end
